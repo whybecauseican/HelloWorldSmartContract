@@ -1,0 +1,34 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.17;
+
+contract HelloWorld {
+    string public greet = "Hello World!";
+    address public owner;
+    uint public updateCount;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    // Example using require: Only the owner can update the greeting message.
+    function updateGreeting(string memory _newGreet) public {
+        require(msg.sender == owner, "Only the owner can update the greeting.");
+        greet = _newGreet;
+        updateCount++;
+    }
+
+    // Example using assert: Ensure the update count is within a reasonable range.
+    function checkUpdateCount() public view returns (string memory) {
+        assert(updateCount < 10); // If false, something is wrong.
+        return "Update count is within the expected range.";
+    }
+
+    // Example using revert: Custom error if certain conditions aren't met.
+    function resetGreeting() public {
+        if (updateCount >= 5) {
+            revert("Cannot reset greeting after 5 updates.");
+        }
+        greet = "Hello World!";
+        updateCount = 0;
+    }
+}
